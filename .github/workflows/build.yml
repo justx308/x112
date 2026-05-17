@@ -28,6 +28,16 @@ jobs:
         run: |
           rm -rf .buildozer
 
+     - name: Force rebuild p4a
+      run: |
+      rm -rf .buildozer/android/platform/python-for-android
+       rm -rf ~/.buildozer/android/platform/python-for-android
+
+ -  name: Clean build environment
+    run: |
+    rm -rf .buildozer
+    rm -rf ~/.buildozer
+
       - name: Build APK
         run: |
           export DEBIAN_FRONTEND=noninteractive
