@@ -28,13 +28,16 @@ jobs:
           python3 -m pip install --upgrade pip setuptools wheel
           pip install cython==0.29.36 buildozer
 
-      - name: Initialize Buildozer (if needed)
+      # 🔥 THIS IS WHERE YOUR FIX GOES
+      - name: Accept Android SDK licenses
         run: |
-          if [ ! -f buildozer.spec ]; then buildozer init; fi
+          mkdir -p $HOME/.android
+          touch $HOME/.android/repositories.cfg || true
+          yes | buildozer -v android debug || true
 
       - name: Build APK
         run: |
-          buildozer -v android debug
+          yes | buildozer -v android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
