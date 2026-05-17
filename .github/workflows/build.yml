@@ -22,11 +22,16 @@ jobs:
           zlib1g-dev libffi-dev libssl-dev \
           cython3
 
-    - name: Install Python tools
+    - name: Install Buildozer + dependencies
       run: |
         python3 -m pip install --upgrade pip setuptools wheel
-        pip install cython buildozer
+        pip install cython==0.29.36 buildozer
+
+    - name: Setup Android environment
+      run: |
+        sudo apt install -y wget unzip
+        mkdir -p $HOME/.buildozer/android/platform
 
     - name: Build APK
       run: |
-        buildozer -v android debug
+        buildozer android debug
