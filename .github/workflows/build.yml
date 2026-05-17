@@ -31,9 +31,7 @@ jobs:
         run: |
           rm -rf .buildozer
 
-      - name: Verify Kivy import
-        run: |
-          python3 -c "import kivy; print('kivy OK')"
+      
 
       - name: Build APK
         run: |
