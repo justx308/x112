@@ -11,11 +11,22 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt update
-        sudo apt install -y python3-pip git zip unzip
-        pip install buildozer
+        sudo apt install -y \
+          python3-pip git zip unzip \
+          openjdk-17-jdk \
+          build-essential \
+          autoconf libtool pkg-config \
+          zlib1g-dev libffi-dev libssl-dev \
+          cython3
+
+    - name: Install Python tools
+      run: |
+        python3 -m pip install --upgrade pip setuptools wheel
+        pip install cython buildozer
 
     - name: Build APK
-      run: buildozer android debug
+      run: |
+        buildozer -v android debug
