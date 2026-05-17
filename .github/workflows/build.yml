@@ -1,37 +1,5 @@
-name: Build APK
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Install system dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y \
-          python3-pip git zip unzip \
-          openjdk-17-jdk \
-          build-essential \
-          autoconf libtool pkg-config \
-          zlib1g-dev libffi-dev libssl-dev \
-          cython3
-
-    - name: Install Buildozer + dependencies
-      run: |
-        python3 -m pip install --upgrade pip setuptools wheel
-        pip install cython==0.29.36 buildozer
-
-    - name: Setup Android environment
-      run: |
-        sudo apt install -y wget unzip
-        mkdir -p $HOME/.buildozer/android/platform
-
-    - name: Build APK
-      run: |
-        buildozer android debug
+- name: Upload APK
+  uses: actions/upload-artifact@v4
+  with:
+    name: x112-apk
+    path: bin/*.apk
