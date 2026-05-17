@@ -16,27 +16,28 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y \
-            python3-pip git zip unzip \
-            openjdk-17-jdk \
-            build-essential \
-            autoconf libtool pkg-config \
+            git zip unzip openjdk-17-jdk \
+            python3-pip autoconf libtool pkg-config \
             zlib1g-dev libffi-dev libssl-dev \
-            cython3
+            build-essential
 
       - name: Install Python tools
         run: |
           python3 -m pip install --upgrade pip setuptools wheel
-          pip install cython==0.29.36 buildozer
+          pip install cython==0.29.36 buildozer==1.5.0
 
-      # 🔥 THIS IS WHERE YOUR FIX GOES
-      - name: Accept Android SDK licenses
+      # 🔥 FIX 2 (clean build cache)
+      - name: Clean build cache
         run: |
-          mkdir -p $HOME/.android
-          touch $HOME/.android/repositories.cfg || true
-          yes | buildozer -v android debug || true
+          rm -rf .buildozer
+
+      - name: Verify Kivy import
+        run: |
+          python3 -c "import kivy; print('kivy OK')"
 
       - name: Build APK
         run: |
+          export DEBIAN_FRONTEND=noninteractive
           yes | buildozer -v android debug
 
       - name: Upload APK artifact
